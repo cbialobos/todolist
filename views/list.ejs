@@ -1,20 +1,21 @@
-<h1>Todolist</h1>
+<h1>Ma todolist</h1>
 
-<p>
----
-</p>
-<p>
-  <%
-  var arrayLength = totolist.length;
-  for (var i = 0; i < arrayLength; i++) {%>
-    <% totolist[i] %>
+<table>
+  <% for (var i = 0; i < todolist.length; i++) { %>
+  <tr>
+    <td>
+      <form name="delete" action="/todo/delete" method="POST" onsubmit='redirect();return false;'>
+        <input type="hidden" name="id" value="<%= todolist[i]%>"/>
+        <img src="delete.png" alt="Supprimer" onclick="document.forms['delete'].submit();">
+      </form>
+    </td>
+    <td><%= todolist[i] %></td>
+  </tr>
   <%}%>
-</p>
-<p>
- ---
+</table>
  </p>
- <form name="form1" method="POST" action="/todolist">
-  <td>Add item :</td>
-  <td><input type="text" name="append" ></td>
-  <td colspan="2"><input type="submit" value="Add" ></td>
+ <form method="POST" action="/todo/add" onsubmit='redirect();return false;'>
+  <td>Que dois-je faire ?</td>
+  <td><input type="text" name="newitem" autofocus=true></td>
+  <td colspan="2"><input type="submit" value="Valider"></td>
  </form>
