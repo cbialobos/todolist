@@ -1,13 +1,13 @@
 <h1>Ma todolist</h1>
 <form method="POST" action="/todo/delete">
-<table>
+<ul>
   <% for (var i = 0; i < todolist.length; i++) { %>
-  <tr>
+  <li>
     <td><button type="submit" name="id" value="<%= todolist[i]%>"><img src="delete.png" alt="Supprimer"></button></td>
     <td><%= todolist[i] %></td>
-  </tr>
+  </li>
   <%}%>
-</table>
+</ul>
 </form>
  </p>
  <form method="POST" action="/todo/add">

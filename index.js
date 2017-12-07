@@ -6,8 +6,7 @@ const array = require('./array');
 
 const app = express();
 
-app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookiesession({
   name: 'session',
   keys: ['key1', 'key2']
@@ -28,7 +27,7 @@ app.get('/todo', (req, res) => {
 });
 
 app.post('/todo/add', (req, res) => {
-  if (req.body.newitem === undefined) {
+  if (req.body.newitem === '') {
     return;
   }
 
@@ -50,4 +49,3 @@ app.use((req, res) => {
 });
 
 app.listen(8080);
-
