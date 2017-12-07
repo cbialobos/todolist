@@ -1,6 +1,6 @@
 function RemoveElem(list, elem) {
   const pos = list.indexOf(elem);
-  if (pos === -1) {
+  if (pos < 0) {
     return;
   }
 

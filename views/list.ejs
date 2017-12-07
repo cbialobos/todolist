@@ -1,20 +1,16 @@
 <h1>Ma todolist</h1>
-
+<form method="POST" action="/todo/delete">
 <table>
   <% for (var i = 0; i < todolist.length; i++) { %>
   <tr>
-    <td>
-      <form name="delete" action="/todo/delete" method="POST" onsubmit='redirect();return false;'>
-        <input type="hidden" name="id" value="<%= todolist[i]%>"/>
-        <img src="delete.png" alt="Supprimer" onclick="document.forms['delete'].submit();">
-      </form>
-    </td>
+    <td><button type="submit" name="id" value="<%= todolist[i]%>"><img src="delete.png" alt="Supprimer"></button></td>
     <td><%= todolist[i] %></td>
   </tr>
   <%}%>
 </table>
+</form>
  </p>
- <form method="POST" action="/todo/add" onsubmit='redirect();return false;'>
+ <form method="POST" action="/todo/add">
   <td>Que dois-je faire ?</td>
   <td><input type="text" name="newitem" autofocus=true></td>
   <td colspan="2"><input type="submit" value="Valider"></td>
