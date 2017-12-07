@@ -4,13 +4,13 @@ const bodyParser = require('body-parser');
 const cookiesession = require('cookie-session');
 const array = require('./array');
 
-let urlencodedParser = bodyParser.urlencoded({ extended: false });
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 const app = express();
 
 app.use(cookiesession({
   name: 'session',
-  keys: ['key1', 'key2']
+  keys: ['key1', 'key2'],
 }));
 
 app.use(express.static(`${__dirname}/public`))
