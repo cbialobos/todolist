@@ -1,48 +1,29 @@
-const express = require('express');
+const app = require('express')();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 const favicon = require('serve-favicon');
-const bodyParser = require('body-parser');
-const cookiesession = require('cookie-session');
+const serveStatic = require('serve-static');
 const array = require('./array');
 
-const urlencodedParser = bodyParser.urlencoded({ extended: false });
+const todolist = ['1st', '2nd'];
 
-const app = express();
-
-app.use(cookiesession({
-  name: 'session',
-  keys: ['key1', 'key2'],
-}));
-
-app.use(express.static(`${__dirname}/public`))
+app.use(serveStatic(`${__dirname}/public`))
   .use(favicon(`${__dirname}/public/favicon.ico`));
 
-app.use((req, res, next) => {
-  if (typeof req.session.todolist === 'undefined') {
-    req.session.todolist = [];
-  }
-  next();
-});
-
 app.get('/todo', (req, res) => {
-  res.render('list.ejs', { todolist: req.session.todolist });
+  res.render('list.ejs', { todolist });
 });
 
-app.post('/todo/add', urlencodedParser, (req, res) => {
-  if (req.body.newitem === '') {
-    return;
-  }
+io.on('connection', (socket) => {
+  socket.on('add', (task) => {
+    todolist.post(task);
+    socket.broadcast.emit('add', task);
+  })
 
-  req.session.todolist.push(req.body.newitem);
-  res.redirect('/todo');
-});
-
-app.post('/todo/delete/', urlencodedParser, (req, res) => {
-  if (typeof req.body.id === 'undefined') {
-    return;
-  }
-
-  array.RemoveElem(req.session.todolist, req.body.id);
-  res.redirect('/todo');
+    .on('remove', (taskId) => {
+      todolist.splice(taskId, 1);
+      socket.broadcast.emit(taskId);
+    });
 });
 
 app.use((req, res) => {
