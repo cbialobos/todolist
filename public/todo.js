@@ -1,5 +1,5 @@
 function buildElement(task) {
-  return `<li id=task_${task.id}><button class="remove-elem" value='${task.id}'>✘</button>${task.task}</li>`;
+  return `<li id=task_${task.id}><button type=submit class="remove-elem" value='${task.id}'>✘</button>${task.task}</li>`;
 }
 
 function addTask(task) {
@@ -21,17 +21,16 @@ const socket = io()
   });
 
 $(document).ready(() => {
+  $('#todolist').on('click', '.remove-elem', (e) => {
+    const taskId = e.target.value;
+    socket.emit('remove', taskId);
+    return false;
+  });
+
   $.getJSON('/task')
     .done((data) => {
       $.each(data, (i, item) => {
         addTask(item);
-      });
-    })
-    .done(() => {
-      $('#todolist').on('click', 'button', (e) => {
-        const taskId = e.target.value;
-        socket.emit('remove', taskId);
-        return false;
       });
     });
 });
