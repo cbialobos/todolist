@@ -10,6 +10,10 @@ function removeTask(taskId) {
   $(`#todolist li[id=task_${taskId}]`).remove();
 }
 
+function isNullOrWhitespace(input) {
+  return !input || input.trim().length < 1;
+}
+
 const socket = io()
 
   .on('add', (task) => {
@@ -37,6 +41,7 @@ $(document).ready(() => {
 
 $('#add').submit(() => {
   const newTask = $('#newitem').val();
+  if (isNullOrWhitespace(newTask)) return false;
   socket.emit('add', newTask);
   $('#newitem').val('').focus();
   return false;
